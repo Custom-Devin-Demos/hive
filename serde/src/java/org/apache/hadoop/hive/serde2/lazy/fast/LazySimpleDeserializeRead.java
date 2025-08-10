@@ -144,7 +144,7 @@ public final class LazySimpleDeserializeRead extends DeserializeRead {
    * Get detailed read position information to help diagnose exceptions.
    */
   public String getDetailedReadPositionString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
 
     sb.append("Reading byte[] of length ");
     sb.append(bytes.length);

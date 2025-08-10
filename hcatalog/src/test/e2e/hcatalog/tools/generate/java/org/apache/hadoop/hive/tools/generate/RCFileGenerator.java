@@ -63,8 +63,8 @@ public class RCFileGenerator {
     "van buren", "white", "xylophone", "young", "zipper"};
 
   private static String randomName() {
-    StringBuffer buf =
-        new StringBuffer(firstName[rand.nextInt(firstName.length)]);
+    StringBuilder buf =
+        new StringBuilder(firstName[rand.nextInt(firstName.length)]);
     buf.append(' ');
     buf.append(lastName[rand.nextInt(lastName.length)]);
     return buf.toString();
@@ -92,7 +92,7 @@ public class RCFileGenerator {
   private static byte[] randomMap() throws Exception {
     int len = rand.nextInt(5) + 1;
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0; i < len; i++) {
       if (i != 0) buf.append('\u0002');
       buf.append(firstName[rand.nextInt(26)]);
@@ -105,7 +105,7 @@ public class RCFileGenerator {
   private static byte[] randomArray() throws Exception {
     int len = rand.nextInt(5) + 1;
 
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0; i < len; i++) {
       if (i != 0) buf.append('\u0002');
       buf.append(Integer.valueOf(randomAge()).toString());

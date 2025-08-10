@@ -63,7 +63,7 @@ public class UDFRegExpReplace extends UDF {
       replacementString = replacement.toString();
     }
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     while (m.find()) {
       m.appendReplacement(sb, replacementString);
     }

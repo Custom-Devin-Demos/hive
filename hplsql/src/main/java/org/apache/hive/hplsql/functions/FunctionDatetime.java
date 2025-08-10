@@ -20,6 +20,10 @@ package org.apache.hive.hplsql.functions;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -60,8 +64,8 @@ public class FunctionDatetime extends Function {
   }
   
   public static Var currentDate() {
-    SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-    String s = f.format(Calendar.getInstance().getTime());
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    String s = LocalDateTime.now().format(f);
     return new Var(Var.Type.DATE, Utils.toDate(s)); 
   }
   
@@ -90,8 +94,8 @@ public class FunctionDatetime extends Function {
     if (precision > 0 && precision <= 3) {
       format += "." + StringUtils.repeat("S", precision);
     }
-    SimpleDateFormat f = new SimpleDateFormat(format);
-    String s = f.format(Calendar.getInstance(TimeZone.getDefault()).getTime());
+    DateTimeFormatter f = DateTimeFormatter.ofPattern(format);
+    String s = LocalDateTime.now().format(f);
     return new Var(Utils.toTimestamp(s), precision); 
   }
   
@@ -179,7 +183,7 @@ public class FunctionDatetime extends Function {
     if (cnt > 1) {
       format = evalPop(ctx.func_param(1).expr()).toString();
     }
-    evalString(new SimpleDateFormat(format).format(new Date(epoch * 1000)));
+    evalString(DateTimeFormatter.ofPattern(format).format(Instant.ofEpochSecond(epoch).atZone(ZoneId.systemDefault())));
   }
   
   /**
@@ -188,4 +192,4 @@ public class FunctionDatetime extends Function {
   void unixTimestamp(HplsqlParser.Expr_func_paramsContext ctx) {
     evalVar(new Var(System.currentTimeMillis()/1000));
   }
-}  
+}    

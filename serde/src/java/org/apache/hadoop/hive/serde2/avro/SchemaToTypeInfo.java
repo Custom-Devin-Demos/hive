@@ -29,7 +29,7 @@ import static org.apache.avro.Schema.Type.STRING;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,7 @@ class SchemaToTypeInfo {
   // Map of Avro's primitive types to Hives (for those that are supported by both)
   private static final Map<Schema.Type, TypeInfo> primitiveTypeToTypeInfo = initTypeMap();
   private static Map<Schema.Type, TypeInfo> initTypeMap() {
-    Map<Schema.Type, TypeInfo> theMap = new Hashtable<Schema.Type, TypeInfo>();
+    Map<Schema.Type, TypeInfo> theMap = new ConcurrentHashMap<Schema.Type, TypeInfo>();
     theMap.put(NULL, TypeInfoFactory.getPrimitiveTypeInfo("void"));
     theMap.put(BOOLEAN, TypeInfoFactory.getPrimitiveTypeInfo("boolean"));
     theMap.put(INT, TypeInfoFactory.getPrimitiveTypeInfo("int"));

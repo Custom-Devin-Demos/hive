@@ -169,7 +169,7 @@ public final class Op {
         }
       }
       this.attrs.remove("keys:");
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       JSONArray conditionMap = joinObj.getJSONArray("condition map:");
       for (int index = 0; index < conditionMap.length(); index++) {
         JSONObject cond = conditionMap.getJSONObject(index);
@@ -254,7 +254,7 @@ public final class Op {
       }
       // update the attrs
       this.attrs.remove("keys:");
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       JSONArray conditionMap = joinObj.getJSONArray("condition map:");
       for (int index = 0; index < conditionMap.length(); index++) {
         JSONObject cond = conditionMap.getJSONObject(index);
@@ -277,7 +277,7 @@ public final class Op {
   }
 
   private String getNameWithOpIdStats() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(TezJsonParserUtils.renameReduceOutputOperator(name, vertex));
     if (operatorId != null) {
       sb.append(" [" + operatorId + "]");

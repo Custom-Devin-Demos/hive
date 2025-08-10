@@ -81,8 +81,6 @@ import org.apache.hive.common.util.ShutdownHookManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
 
 
 /**
@@ -355,38 +353,19 @@ public class CliDriver {
    * @return 0 if ok
    */
   public int processLine(String line, boolean allowInterrupting) {
-    SignalHandler oldSignal = null;
-    Signal interruptSignal = null;
+    Thread shutdownHook = null;
 
     if (allowInterrupting) {
-      // Remember all threads that were running at the time we started line processing.
-      // Hook up the custom Ctrl+C handler while processing this line
-      interruptSignal = new Signal("INT");
-      oldSignal = Signal.handle(interruptSignal, new SignalHandler() {
-        private boolean interruptRequested;
-
-        @Override
-        public void handle(Signal signal) {
-          boolean initialRequest = !interruptRequested;
-          interruptRequested = true;
-
-          // Kill the VM on second ctrl+c
-          if (!initialRequest) {
-            console.printInfo("Exiting the JVM");
-            System.exit(127);
-          }
-
-          // Interrupt the CLI thread to stop the current statement and return
-          // to prompt
-          console.printInfo("Interrupting... Be patient, this might take some time.");
-          console.printInfo("Press Ctrl+C again to kill JVM");
-
-          // First, kill any running MR jobs
-          HadoopJobExecHelper.killRunningJobs();
-          TezJobExecHelper.killRunningJobs();
-          HiveInterruptUtils.interrupt();
-        }
+      shutdownHook = new Thread(() -> {
+        console.printInfo("Interrupting... Be patient, this might take some time.");
+        console.printInfo("Press Ctrl+C again to kill JVM");
+        
+        // First, kill any running MR jobs
+        HadoopJobExecHelper.killRunningJobs();
+        TezJobExecHelper.killRunningJobs();
+        HiveInterruptUtils.interrupt();
       });
+      Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 
     try {
@@ -420,9 +399,11 @@ public class CliDriver {
       CommandProcessorFactory.clean((HiveConf) conf);
       return lastRet;
     } finally {
-      // Once we are done processing the line, restore the old handler
-      if (oldSignal != null && interruptSignal != null) {
-        Signal.handle(interruptSignal, oldSignal);
+      if (shutdownHook != null) {
+        try {
+          Runtime.getRuntime().removeShutdownHook(shutdownHook);
+        } catch (IllegalStateException e) {
+        }
       }
     }
   }

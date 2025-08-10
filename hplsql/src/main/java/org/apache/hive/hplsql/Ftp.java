@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Pattern;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +52,7 @@ public class Ftp implements Runnable {
   
   FTPClient ftp = null;
   ConcurrentLinkedQueue<String> filesQueue = new ConcurrentLinkedQueue<String>();
-  Hashtable<String, FTPFile> filesMap = new Hashtable<String, FTPFile>();
+  ConcurrentHashMap<String, FTPFile> filesMap = new ConcurrentHashMap<String, FTPFile>();
   
   AtomicInteger currentFileCnt = new AtomicInteger(1);
   AtomicInteger currentThreadCnt = new AtomicInteger(0);

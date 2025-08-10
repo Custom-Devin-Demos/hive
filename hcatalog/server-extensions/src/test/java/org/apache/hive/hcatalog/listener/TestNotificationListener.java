@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -66,7 +66,7 @@ import org.junit.Test;
 
 public class TestNotificationListener extends HCatBaseTest implements MessageListener {
 
-  private List<String> actualMessages = new Vector<String>();
+  private List<String> actualMessages = new ArrayList<String>();
   private static final int MSG_RECEIVED_TIMEOUT = 30;
   private static final List<String> expectedMessages = Arrays.asList(
       HCatConstants.HCAT_CREATE_DATABASE_EVENT,
