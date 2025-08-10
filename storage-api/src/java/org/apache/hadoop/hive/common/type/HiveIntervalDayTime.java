@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.hive.common.util.IntervalDayTimeUtils;
 
-import sun.util.calendar.BaseCalendar;
 
 /**
  * Day-time interval type representing an offset in days/hours/minutes/seconds,

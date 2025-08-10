@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +86,7 @@ public class TestAvroDeserializer {
     Schema s = AvroSerdeUtils.getSchemaFor(TestAvroObjectInspectorGenerator.MAP_WITH_PRIMITIVE_VALUE_TYPE);
     GenericData.Record record = new GenericData.Record(s);
 
-    Map<String, Long> m = new Hashtable<String, Long>();
+    Map<String, Long> m = new ConcurrentHashMap<String, Long>();
     m.put("one", 1l);
     m.put("two", 2l);
     m.put("three", 3l);
@@ -564,7 +564,7 @@ public class TestAvroDeserializer {
     Schema s = AvroSerdeUtils.getSchemaFor(schemaString);
     GenericData.Record record = new GenericData.Record(s);
 
-    Map<String, Long> m = new Hashtable<String, Long>();
+    Map<String, Long> m = new ConcurrentHashMap<String, Long>();
     m.put("one", 1l);
     m.put("two", 2l);
     m.put("three", 3l);

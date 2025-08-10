@@ -159,7 +159,7 @@ public class VectorMapJoinFastValueStore {
      */
     @Override
     public String getDetailedHashMapResultPositionString() {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
 
       sb.append("Read index ");
       sb.append(readIndex);

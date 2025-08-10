@@ -25,38 +25,31 @@ package org.apache.hive.beeline;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
-
-public class SunSignalHandler implements BeeLineSignalHandler, SignalHandler {
+public class SunSignalHandler implements BeeLineSignalHandler {
   private Statement stmt = null;
   private final BeeLine beeLine;
 
+  private Thread shutdownHook;
+
   SunSignalHandler (BeeLine beeLine) {
     this.beeLine = beeLine;
-    // Interpret Ctrl+C as a request to cancel the currently
-    // executing query.
-    Signal.handle (new Signal ("INT"), this);
+    this.shutdownHook = new Thread(() -> {
+      try {
+        if(stmt == null || stmt.isClosed()) {
+          System.exit(127);
+        } else {
+          beeLine.info(beeLine.loc("interrupt-ctrl-c"));
+          stmt.cancel();
+        }
+      } catch (SQLException ex) {
+        // ignore
+      }
+    });
+    Runtime.getRuntime().addShutdownHook(shutdownHook);
   }
 
   @Override
   public void setStatement(Statement stmt) {
     this.stmt = stmt;
-  }
-
-  @Override
-  public void handle (Signal signal) {
-    try {
-      // exit the JVM if Ctrl+C is received
-      // and no current statement is executing
-      if(stmt == null || stmt.isClosed()) {
-        System.exit(127);
-      } else {
-        beeLine.info(beeLine.loc("interrupt-ctrl-c"));
-        stmt.cancel();
-      }
-    } catch (SQLException ex) {
-      // ignore
-    }
   }
 }

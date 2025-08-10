@@ -117,7 +117,7 @@ public final class BinarySortableDeserializeRead extends DeserializeRead {
    * Get detailed read position information to help diagnose exceptions.
    */
   public String getDetailedReadPositionString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
 
     sb.append("Reading inputByteBuffer of length ");
     sb.append(inputByteBuffer.getEnd());

@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -283,7 +283,7 @@ public class TestBeeLineWithArgs {
         List<String> copy = new ArrayList<>(argList);
         copy.add("-i");
         copy.add(scriptFile.getAbsolutePath());
-        return testCommandLineScript(copy, new StringBufferInputStream("!quit\n"), streamType);
+        return testCommandLineScript(copy, new ByteArrayInputStream("!quit\n".getBytes()), streamType);
       }
     }, SCRIPT {
       @Override

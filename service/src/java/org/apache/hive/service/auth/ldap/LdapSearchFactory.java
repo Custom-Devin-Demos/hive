@@ -17,7 +17,7 @@
  */
 package org.apache.hive.service.auth.ldap;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
@@ -51,7 +51,7 @@ public final class LdapSearchFactory implements DirSearchFactory {
 
   private static DirContext createDirContext(HiveConf conf, String principal, String password)
       throws NamingException {
-    Hashtable<String, Object> env = new Hashtable<String, Object>();
+    ConcurrentHashMap<String, Object> env = new ConcurrentHashMap<String, Object>();
     String ldapUrl = conf.getVar(HiveConf.ConfVars.HIVE_SERVER2_PLAIN_LDAP_URL);
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
     env.put(Context.PROVIDER_URL, ldapUrl);
